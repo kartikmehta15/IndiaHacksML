@@ -7,17 +7,20 @@ Given data of the submissions, problems, and users, the aim of the competition i
 Codes : All codes are written in R language. o0_model_pipeline.R is the main code which calls o01_create_dataset.R to create dataset and o02_train_xgboost_model.R for xgboost model.
 
 Approach:
+
 1. Label encoded (or converted to factor and then to numeric in R's language) all categorical features (including user_id and problem_id).
 2. Created a couple of new variables like Number of skills, User accuracy (use overall average if user has solved less than 5 problems).
 3. Trained 5 Xgboost models (depth=5,10,15,25,30) with hyper parameters of each tuned using Random Search.
 4. Ensembled these 5 models using linear blending (though ensembling brought only minor lift which was expected also as there is not much diversity among the models).
 
 What didnt't work:
+
 1. Binary encoded skills but that didnt bring any lift.
 2. Experimented with interaction features (userid-problemLevel, usertype-problemLevel, problemId-userType, problemId-skill etc) but could not get any gain.
 3. Trained a FTRL model (Refer: https://www.kaggle.com/c/avazu-ctr-prediction/forums/t/10927/beat-the-benchmark-with-less-than-1mb-of-memory or https://www.kaggle.com/kartikmehtaiitd/springleaf-marketing-response/stochastic-gradient-descent) which gave leaderboard score of 0.821. Used it as one of the models for ensembling with xgboost but got only negligible gain in cross validation.
 
 What I should/could have tried:
+
 1. One hot encoding (or hashing) categorical features and training diverse models and using them for ensemble.
 2. Training diverse xgboost models using bagging or probabilistic feature inclusion.
 3. Better feature engineering.
